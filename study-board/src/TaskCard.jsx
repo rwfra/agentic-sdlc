@@ -2,9 +2,11 @@ export default function TaskCard(props) {
   return (
     <div className={`task-card ${props.status ? `task-card--${props.status}` : ''}`}>
       <h3>{props.title}</h3>
+      <span>{props.subject}</span>
       <p>{props.description}</p>
       <p>Status: {props.status}</p>
       <div className="task-card__actions"> 
+        <button onClick={props.onEdit}>Edit</button>
         {props.status === "completed" && (
           <button onClick={props.onReset}>
             Reset

@@ -217,7 +217,7 @@
   border-color: var(--error);
 }
 
-.add-task-form {
+.task-form {
   display: flex;
   flex-direction: column;
   gap: 8px;
