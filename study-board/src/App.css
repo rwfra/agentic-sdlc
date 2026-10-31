@@ -182,3 +182,58 @@
     border-right-color: var(--border);
   }
 }
+
+.stats-card {
+  border: 1px solid var(--border);
+  padding: 16px;
+  border-radius: 8px;
+  background-color: var(--card-bg);
+}
+
+.task-card {
+  border: 1px solid var(--border);
+  padding: 16px;
+  margin-bottom: 16px;
+  border-radius: 8px;
+  background-color: var(--card-bg);
+  text-align: left;
+}
+
+.task-card__actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 16px;
+}
+
+.task-card--completed {
+  border-color: var(--success);
+}
+
+.task-card--in-progress {
+  border-color: var(--warning);
+}
+
+.task-card--not-started {
+  border-color: var(--error);
+}
+
+.add-task-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  /* Turn the form into a vertical stack that is mobile-friendly with proper spacing */
+  width: 100%;
+  box-sizing: border-box;
+  max-width: 400px; /* Limit the form width for better readability on larger screens */
+  margin: 0 auto; /* Center the form horizontally */
+  padding: 16px; /* Add some padding for better spacing inside the form */
+  background-color: var(--card-bg); /* Ensure the form has a consistent background color */
+  border: 1px solid var(--border); /* Add a border to match the card style */
+  border-radius: 8px; /* Match the card style with rounded corners */
+  box-shadow: var(--shadow); /* Add a subtle shadow to match the card style */
+  margin-top: 16px; /* Add some spacing above the form */
+  margin-bottom: 16px; /* Add some spacing below the form */
+  @media (max-width: 1024px) {
+    flex-direction: column;
+  }
+}

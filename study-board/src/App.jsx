@@ -1,11 +1,47 @@
 import { useState } from 'react'
+import TaskCard from './TaskCard'
+import StatsCard from './StatsCard'
+import AddTaskForm from './AddTaskForm'
 import heroImg from './assets/hero.png'
 import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 
+const initialTasks = [
+  { id: 0, status: "completed", title: "Task 1", description: "This is a sample task." },
+  { id: 1, status: "in-progress", title: "Another Task", description: "This is another sample task." },
+]
+
 function App() {
-  const [count, setCount] = useState(0)
+  const [tasks, setTasks] = useState(initialTasks);
+  const [showAddTaskForm, setShowAddTaskForm] = useState(false);
+  const completedTasks = tasks.filter(task => task.status === "completed").length;
+  const notStartedTasks = tasks.filter(task => task.status === "not-started").length;
+  const inProgressTasks = tasks.filter(task => task.status === "in-progress").length;
+
+  const handleAdd = (title, description) => {
+    setTasks((prevTasks) => [
+      ...prevTasks,
+      { id: crypto.randomUUID(), status: "not-started", title: title, description: description }
+    ]);
+    setShowAddTaskForm(false);
+  };
+
+  const handleReset = (id) => {
+    setTasks((prevTasks) => prevTasks.map(task => task.id === id ? { ...task, status: "not-started" } : task));
+  };
+
+  const handleStart = (id) => {
+    setTasks((prevTasks) => prevTasks.map(task => task.id === id ? { ...task, status: "in-progress" } : task));
+  };
+
+  const handleComplete = (id) => {
+    setTasks((prevTasks) => prevTasks.map(task => task.id === id ? { ...task, status: "completed" } : task));
+  };
+
+  const handleDelete = (id) => {
+    setTasks((prevTasks) => prevTasks.filter(task => task.id !== id));
+  };
 
   return (
     <>
@@ -21,99 +57,22 @@ function App() {
             Keep track of your study progress efficiently.
           </p>
         </div>
-        <button
-          type="button"
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
-        >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
-        </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
+        <div style={{ display: 'flex', gap: '16px' }}>
+          <StatsCard label="Total Tasks" value={tasks.length} />
+          <StatsCard label="Completed Tasks" value={completedTasks} />
+          <StatsCard label="In-Progress Tasks" value={inProgressTasks} />
+          <StatsCard label="Not Started Tasks" value={notStartedTasks} />
         </div>
       </section>
-
-      <div className="ticks"></div>
+      <section>
+        <h2>Tasks</h2>
+          <button onClick={() => setShowAddTaskForm(true)}>Create Task</button>
+          {showAddTaskForm && <AddTaskForm onAdd={({ title, description }) => handleAdd(title, description)} />}
+          {tasks.length === 0 && <p>You're all caught up!</p>}
+          {tasks.map(task => (
+            <TaskCard key={task.id} {...task} onReset={() => handleReset(task.id)} onStart={() => handleStart(task.id)} onComplete={() => handleComplete(task.id)} onDelete={() => handleDelete(task.id)} />
+          ))}
+      </section>
       <section id="spacer"></section>
     </>
   )

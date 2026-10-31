@@ -1,4 +1,10 @@
 :root {
+  --card-bg-light: #fff;
+  --card-bg-dark: #1f2028;
+  --card-bg: var(--card-bg-light);
+  --success: #22c55e;
+  --warning: #f59e0b;
+  --error: #ef4444;
   --text: #6b6375;
   --text-h: #08060d;
   --bg: #fff;
@@ -32,6 +38,7 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
+    --card-bg: var(--card-bg-dark);
     --text: #9ca3af;
     --text-h: #f3f4f6;
     --bg: #16171d;

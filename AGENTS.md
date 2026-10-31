@@ -1,0 +1,1 @@
+- Consult @STUDY_PLAN.md whenever the user goes through the various exercises.
