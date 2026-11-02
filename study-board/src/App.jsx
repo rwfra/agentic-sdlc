@@ -3,9 +3,6 @@ import TaskCard from './TaskCard'
 import StatsCard from './StatsCard'
 import AddTaskForm from './AddTaskForm'
 import Filters from './Filters'
-import heroImg from './assets/hero.png'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
 import './App.css'
 import EditTaskForm from './EditTaskForm'
 
@@ -76,32 +73,43 @@ function App() {
   };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
-        </div>
-        <div>
+    <main className="app-shell">
+      <header className="dashboard-hero">
+        <div className="dashboard-hero__copy">
+          <p className="eyebrow"><span aria-hidden="true">✦</span> YOUR STUDY SPACE</p>
           <h1>Study Board</h1>
-          <p>
-            Keep track of your study progress efficiently.
+          <p className="dashboard-hero__description">
+            Small steps, bright ideas. Keep your learning moving forward.
           </p>
         </div>
-        <div style={{ display: 'flex', gap: '16px' }}>
+        <div className="hero-art" aria-hidden="true">
+          <div className="hero-art__orbit">
+            <span className="hero-art__sparkle">✳</span>
+            <span className="hero-art__dot" />
+          </div>
+          <p>MAKE<br />ROOM<br />TO GROW</p>
+        </div>
+      </header>
+      <section className="stats-grid" aria-label="Study progress">
           <StatsCard label="Total Tasks" value={tasks.length} />
           <StatsCard label="Completed Tasks" value={completedTasks} />
           <StatsCard label="In-Progress Tasks" value={inProgressTasks} />
           <StatsCard label="Not Started Tasks" value={notStartedTasks} />
-        </div>
       </section>
-      <section>
-        <h2>Tasks</h2>
+      <section className="tasks-section" aria-labelledby="tasks-title">
+        <div className="tasks-heading">
+          <div>
+            <p className="eyebrow">YOUR PLAN</p>
+            <h2 id="tasks-title">Study tasks</h2>
+          </div>
+          <p className="tasks-heading__count">
+            {visibleTasks.length} {visibleTasks.length === 1 ? 'task' : 'tasks'} in view
+          </p>
+        </div>
         <Filters searchText={searchQuery} onSearch={(query) => setSearchQuery(query)} statusFilter={statusFilter} onStatusChange={(status) => setStatusFilter(status)} />
         <div className="task-list">
-          {tasks.length === 0 && <p>You're all caught up!</p>}
-          {visibleTasks.length === 0 && tasks.length > 0 && <p>No tasks match your search.</p>}
+          {tasks.length === 0 && <p className="task-list__message">You're all caught up!</p>}
+          {visibleTasks.length === 0 && tasks.length > 0 && <p className="task-list__message">No tasks match your search.</p>}
           {visibleTasks.map(task => (
             task.id === editingId
               ? <EditTaskForm key={task.id} task={task} onSave={(changes) => {
@@ -109,15 +117,14 @@ function App() {
                 }} onCancel={() => setEditingId(null)} />
               : <TaskCard key={task.id} {...task} onEdit={() => setEditingId(task.id)} onReset={() => handleReset(task.id)} onStart={() => handleStart(task.id)} onComplete={() => handleComplete(task.id)} onDelete={() => handleDelete(task.id)} />
           ))}
-          <button className="task-list__add" type="button" aria-label="Create task" onClick={() => setShowAddTaskForm(true)}>+</button>
+          <button className="task-list__add" type="button" aria-label="Create task" onClick={() => setShowAddTaskForm(true)}><span aria-hidden="true">+</span></button>
         </div>
         <dialog ref={addTaskDialogRef} className="task-dialog" aria-labelledby="task-dialog-title" onClose={() => setShowAddTaskForm(false)}>
           <h2 id="task-dialog-title">Create Task</h2>
           {showAddTaskForm && <AddTaskForm onAdd={({ title, description, subject }) => handleAdd(title, description, subject)} onCancel={() => setShowAddTaskForm(false)} />}
         </dialog>
       </section>
-      <section id="spacer"></section>
-    </>
+    </main>
   )
 }
 
