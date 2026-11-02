@@ -113,7 +113,7 @@ function App() {
         </div>
         <dialog ref={addTaskDialogRef} className="task-dialog" aria-labelledby="task-dialog-title" onClose={() => setShowAddTaskForm(false)}>
           <h2 id="task-dialog-title">Create Task</h2>
-          <AddTaskForm onAdd={({ title, description, subject }) => handleAdd(title, description, subject)} onCancel={() => setShowAddTaskForm(false)} />
+          {showAddTaskForm && <AddTaskForm onAdd={({ title, description, subject }) => handleAdd(title, description, subject)} onCancel={() => setShowAddTaskForm(false)} />}
         </dialog>
       </section>
       <section id="spacer"></section>
