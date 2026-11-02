@@ -217,6 +217,52 @@
   border-color: var(--error);
 }
 
+.task-list__add {
+  display: grid;
+  place-items: center;
+  width: 56px;
+  height: 56px;
+  margin: 16px 0 16px auto;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  color: var(--bg);
+  background: var(--accent);
+  box-shadow: var(--shadow);
+  font-size: 32px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.task-list__add:hover {
+  filter: brightness(0.9);
+}
+
+.task-list__add:focus-visible {
+  outline: 3px solid var(--accent);
+  outline-offset: 3px;
+}
+
+.task-dialog {
+  width: min(400px, calc(100% - 32px));
+  max-width: none;
+  box-sizing: border-box;
+  padding: 24px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  background: var(--card-bg);
+  box-shadow: var(--shadow);
+}
+
+.task-dialog::backdrop {
+  background: rgb(0 0 0 / 50%);
+}
+
+.task-dialog h2 {
+  margin-bottom: 16px;
+}
+
 .task-form {
   display: flex;
   flex-direction: column;
