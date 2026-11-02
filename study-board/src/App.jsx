@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import TaskCard from './TaskCard'
 import StatsCard from './StatsCard'
 import AddTaskForm from './AddTaskForm'
@@ -20,6 +20,17 @@ function App() {
   const [statusFilter, setStatusFilter] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
   const [editingId, setEditingId] = useState(null);
+  const addTaskDialogRef = useRef(null);
+
+  useEffect(() => {
+    const dialog = addTaskDialogRef.current;
+
+    if (showAddTaskForm && !dialog.open) {
+      dialog.showModal();
+    } else if (!showAddTaskForm && dialog.open) {
+      dialog.close();
+    }
+  }, [showAddTaskForm]);
 
   const query = searchQuery.trim().toLowerCase();
   const matchesSearch = (task) => task.title.toLowerCase().includes(query)
@@ -88,17 +99,22 @@ function App() {
       <section>
         <h2>Tasks</h2>
         <Filters searchText={searchQuery} onSearch={(query) => setSearchQuery(query)} statusFilter={statusFilter} onStatusChange={(status) => setStatusFilter(status)} />
-        <button onClick={() => { setShowAddTaskForm(true); }}>Create Task</button>
-        {showAddTaskForm && <AddTaskForm onAdd={({ title, description, subject }) => handleAdd(title, description, subject)} onCancel={() => { setShowAddTaskForm(false); }} />}
-        {tasks.length === 0 && <p>You're all caught up!</p>}
-        {visibleTasks.length === 0 && tasks.length > 0 && <p>No tasks match your search.</p>}
-        {visibleTasks.map(task => (
-          task.id === editingId
-            ? <EditTaskForm key={task.id} task={task} onSave={(changes) => {
-                handleSave(task.id, changes);
-              }} onCancel={() => setEditingId(null)} />
-            : <TaskCard key={task.id} {...task} onEdit={() => setEditingId(task.id)} onReset={() => handleReset(task.id)} onStart={() => handleStart(task.id)} onComplete={() => handleComplete(task.id)} onDelete={() => handleDelete(task.id)} />
-        ))}
+        <div className="task-list">
+          {tasks.length === 0 && <p>You're all caught up!</p>}
+          {visibleTasks.length === 0 && tasks.length > 0 && <p>No tasks match your search.</p>}
+          {visibleTasks.map(task => (
+            task.id === editingId
+              ? <EditTaskForm key={task.id} task={task} onSave={(changes) => {
+                  handleSave(task.id, changes);
+                }} onCancel={() => setEditingId(null)} />
+              : <TaskCard key={task.id} {...task} onEdit={() => setEditingId(task.id)} onReset={() => handleReset(task.id)} onStart={() => handleStart(task.id)} onComplete={() => handleComplete(task.id)} onDelete={() => handleDelete(task.id)} />
+          ))}
+          <button className="task-list__add" type="button" aria-label="Create task" onClick={() => setShowAddTaskForm(true)}>+</button>
+        </div>
+        <dialog ref={addTaskDialogRef} className="task-dialog" aria-labelledby="task-dialog-title" onClose={() => setShowAddTaskForm(false)}>
+          <h2 id="task-dialog-title">Create Task</h2>
+          <AddTaskForm onAdd={({ title, description, subject }) => handleAdd(title, description, subject)} onCancel={() => setShowAddTaskForm(false)} />
+        </dialog>
       </section>
       <section id="spacer"></section>
     </>
