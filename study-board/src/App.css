@@ -235,7 +235,7 @@
 }
 
 .task-list__add:hover {
-  background: var(--accent-border);
+  filter: brightness(0.9);
 }
 
 .task-list__add:focus-visible {
