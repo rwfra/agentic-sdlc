@@ -1,13 +1,13 @@
 export default function Filters({ searchText, onSearch, statusFilter, onStatusChange }) {
     return (
-        <>
-            <div>
-                <label htmlFor="search">Search:</label>
-                <input id="search" type="text" placeholder="Search tasks..." value={searchText} onChange={(e) => onSearch(e.target.value)} />
-                <button onClick={() => onSearch('')}>Clear</button>
+        <div className="filter-toolbar">
+            <div className="search-field">
+                <label htmlFor="search">Search tasks</label>
+                <input id="search" type="search" placeholder="Search your tasks" value={searchText} onChange={(e) => onSearch(e.target.value)} />
+                <button type="button" onClick={() => onSearch('')}>Clear</button>
             </div>
-            <div>
-                <label htmlFor="status">Filter by Status:</label>
+            <div className="status-field">
+                <label htmlFor="status">Progress</label>
                 <select id="status" value={statusFilter} onChange={(e) => onStatusChange(e.target.value)}>
                     <option value="all">All</option>
                     <option value="not-started">Not Started</option>
@@ -15,6 +15,6 @@ export default function Filters({ searchText, onSearch, statusFilter, onStatusCh
                     <option value="completed">Completed</option>
                 </select>
             </div>
-        </>
+        </div>
     );
 }

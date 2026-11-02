@@ -1,31 +1,31 @@
 export default function TaskCard(props) {
   return (
-    <div className={`task-card ${props.status ? `task-card--${props.status}` : ''}`}>
+    <article className={`task-card ${props.status ? `task-card--${props.status}` : ''}`}>
       <h3>{props.title}</h3>
-      <span>{props.subject}</span>
+      <span className="task-card__subject">{props.subject}</span>
       <p>{props.description}</p>
-      <p>Status: {props.status}</p>
+      <p className="task-card__status">Status: <span>{props.status.replace('-', ' ')}</span></p>
       <div className="task-card__actions"> 
-        <button onClick={props.onEdit}>Edit</button>
+        <button type="button" onClick={props.onEdit}>Edit</button>
         {props.status === "completed" && (
-          <button onClick={props.onReset}>
+          <button type="button" onClick={props.onReset}>
             Reset
           </button>
         )}
         {props.status === "not-started" && (
-          <button onClick={props.onStart}>
+          <button type="button" onClick={props.onStart}>
             Start
           </button>
         )}
         {props.status === "in-progress" && (
-          <button onClick={props.onComplete}>
+          <button type="button" onClick={props.onComplete}>
             Complete
           </button>
         )}
-        <button onClick={props.onDelete}>
+        <button type="button" className="task-card__delete" onClick={props.onDelete}>
           Delete
         </button>
       </div>
-    </div>
+    </article>
   )
 }
