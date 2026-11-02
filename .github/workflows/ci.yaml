@@ -1,0 +1,28 @@
+name: CI Workflow
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+defaults:
+  run:
+    working-directory: ./study-board
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: ./study-board/.nvmrc
+          cache: 'npm'
+          cache-dependency-path: ./study-board/package-lock.json
+      - name: Install dependencies
+        run: npm ci
+      - name: Run lint
+        run: npm run lint
+      - name: Run build
+        run: npm run build
