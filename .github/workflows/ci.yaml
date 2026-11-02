@@ -34,7 +34,7 @@ jobs:
       - name: Download build output
         uses: actions/download-artifact@v4
         with:
-          name: study-board-dist
+          name: study-board
           path: dist
       - name: Deploy to Azure
         uses: azure/webapps-deploy@v3
