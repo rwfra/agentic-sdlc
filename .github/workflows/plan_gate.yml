@@ -1,0 +1,25 @@
+name: Plan Gate
+
+on:
+  pull_request:
+    branches: [ main ]
+    types: [opened, edited, synchronize, reopened]
+
+jobs:
+  require-plan:
+    runs-on: ubuntu-latest
+    permissions: {}
+    steps:
+      - name: Require a filled-in plan
+        env:
+          PR_BODY: ${{ github.event.pull_request.body }}
+        run: |
+          body=$(printf '%s' "$PR_BODY" | tr -d '\r')
+          missing=0
+          for field in 'Goal' 'Scope (paths/files)' 'Risks + mitigations' 'Rollback / escalation plan'; do
+            if ! printf '%s\n' "$body" | grep -F -- "- **$field:**" | grep -qE ':\*\*[[:space:]]*[^[:space:]]'; then
+              echo "::error::Plan field is empty: $field"
+              missing=1
+            fi
+          done
+          exit "$missing"
