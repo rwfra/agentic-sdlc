@@ -3,10 +3,11 @@ name: Plan Gate
 on:
   pull_request:
     branches: [ main ]
-    types: [opened, edited, synchronize, reopened]
+    types: [opened, edited, synchronize, reopened, ready_for_review]
 
 jobs:
   require-plan:
+    if: ${{ !github.event.pull_request.draft }}
     runs-on: ubuntu-latest
     permissions: {}
     steps:
