@@ -31,10 +31,15 @@ jobs:
     if: github.event_name == 'push' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
     steps:
+      - name: Upload build output
+        uses: actions/upload-artifact@v4
+        with:
+          name: study-board-dist
+          path: ./study-board/dist
       - name: Download build output
         uses: actions/download-artifact@v4
         with:
-          name: study-board
+          name: study-board-dist
           path: dist
       - name: Deploy to Azure
         uses: azure/webapps-deploy@v3
